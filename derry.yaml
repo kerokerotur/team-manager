@@ -1,0 +1,15 @@
+# アプリ起動（開発環境用）
+run-dev: flutter run --dart-define-from-file=env/dev.env
+# アプリ起動（stg環境用）
+run-stg: flutter run --dart-define-from-file=env/stg.env
+# アプリ起動（本番用）
+run-prod: flutter run --dart-define-from-file=env/prod.env
+# コード自動生成
+gen:
+  - flutter pub run build_runner build --delete-conflicting-outputs
+  - flutter gen-l10n
+# スプラッシュ画面作成・リセット
+gen-splash: flutter pub pub run flutter_native_splash:create
+reset-splash: flutter pub pub run flutter_native_splash:remove
+# アプリアイコンの作成
+gen-icon: flutter pub run flutter_launcher_icons:main
