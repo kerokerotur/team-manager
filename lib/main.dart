@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_template/gen/assets.gen.dart';
+import 'package:flutter_template/gen_l10n/app_localizations.dart';
 import 'package:flutter_template/src/common/domain/locale/locales.dart';
 import 'package:flutter_template/src/common/domain/locale/locales_provider.dart';
 import 'package:flutter_template/src/plugins/firebase/cloud_messaging.dart';
 import 'package:flutter_template/src/plugins/local_notifications/local_notification_service.dart';
 import 'package:flutter_template/src/router.dart';
+import 'package:flutter_template/src/widgets/app_footer.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -111,6 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+      bottomNavigationBar: const AppFooter(),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'go to sample page',
