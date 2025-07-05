@@ -8,6 +8,7 @@ import 'package:flutter_template/src/plugins/firebase/cloud_messaging.dart';
 import 'package:flutter_template/src/plugins/local_notifications/local_notification_service.dart';
 import 'package:flutter_template/src/router.dart';
 import 'package:flutter_template/src/widgets/app_footer.dart';
+import 'package:flutter_template/src/widgets/hamburger_menu.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -34,7 +35,38 @@ class MyApp extends ConsumerWidget {
     return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        brightness: Brightness.dark,
+        primaryColor: Colors.blueGrey,
+        scaffoldBackgroundColor: Colors.grey[900],
+        colorScheme: ColorScheme.dark(
+          primary: Colors.blueGrey,
+          secondary: Colors.cyanAccent,
+          surface: Colors.grey[850]!,
+          background: Colors.grey[900]!,
+          onPrimary: Colors.white,
+          onSecondary: Colors.black,
+          onSurface: Colors.white,
+          onBackground: Colors.white,
+          onError: Colors.white,
+          brightness: Brightness.dark,
+        ),
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.grey[850],
+          elevation: 0,
+          titleTextStyle: const TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+          iconTheme: const IconThemeData(color: Colors.white),
+        ),
+        drawerTheme: DrawerThemeData(
+          backgroundColor: Colors.grey[900],
+        ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Colors.cyanAccent,
+          foregroundColor: Colors.black,
+        ),
         useMaterial3: true,
       ),
       routeInformationProvider: router.routeInformationProvider,
@@ -82,14 +114,9 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
+      drawer: const HamburgerMenu(),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.

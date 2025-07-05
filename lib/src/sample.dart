@@ -4,6 +4,7 @@ import 'package:flutter_template/src/common/domain/locale/locales.dart';
 import 'package:flutter_template/src/common/domain/locale/locales_provider.dart';
 import 'package:flutter_template/src/const/env.dart';
 import 'package:flutter_template/src/plugins/local_notifications/local_notification_service.dart';
+import 'package:flutter_template/src/widgets/hamburger_menu.dart';
 import 'package:flutter_template/src/router.dart';
 import 'package:flutter_template/gen_l10n/app_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -18,8 +19,8 @@ class Sample extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('サンプルページ'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
+      drawer: const HamburgerMenu(),
       body: Column(
         children: [
           const Padding(padding: EdgeInsets.all(100)),
