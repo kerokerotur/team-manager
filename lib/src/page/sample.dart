@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_template/src/common/domain/locale/locales.dart';
 import 'package:flutter_template/src/common/domain/locale/locales_provider.dart';
 import 'package:flutter_template/src/const/env.dart';
 import 'package:flutter_template/src/plugins/local_notifications/local_notification_service.dart';
 import 'package:flutter_template/src/widgets/hamburger_menu.dart';
+import 'package:flutter_template/src/widgets/app_footer.dart';
 import 'package:flutter_template/src/router.dart';
 import 'package:flutter_template/gen_l10n/app_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Sample extends ConsumerWidget {
   const Sample({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final storage = SharedPreferences.getInstance();
     return Scaffold(
       appBar: AppBar(
         title: const Text('サンプルページ'),
@@ -60,6 +58,7 @@ class Sample extends ConsumerWidget {
           ),
         ],
       ),
+      bottomNavigationBar: const AppFooter(),
       floatingActionButton: FloatingActionButton(onPressed: () {
         router.pushNamed('/');
       }),
