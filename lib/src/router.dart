@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_template/main.dart';
-import 'package:flutter_template/src/sample.dart';
+import 'package:flutter_template/src/page/sample.dart';
 import 'package:go_router/go_router.dart';
 
 final GoRouter router = GoRouter(
