@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_template/gen/assets.gen.dart';
 import 'package:flutter_template/gen_l10n/app_localizations.dart';
 import 'package:flutter_template/src/common/domain/locale/locales.dart';
@@ -12,7 +11,6 @@ import 'package:flutter_template/src/widgets/hamburger_menu.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,11 +40,9 @@ class MyApp extends ConsumerWidget {
           primary: Colors.blueGrey,
           secondary: Colors.cyanAccent,
           surface: Colors.grey[850]!,
-          background: Colors.grey[900]!,
           onPrimary: Colors.white,
           onSecondary: Colors.black,
           onSurface: Colors.white,
-          onBackground: Colors.white,
           onError: Colors.white,
           brightness: Brightness.dark,
         ),
