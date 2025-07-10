@@ -20,7 +20,7 @@ class AppFooter extends StatelessWidget {
           _FooterNavItem(
             icon: Icons.calendar_today,
             label: 'スケジュール',
-            routeName: '/sample',
+            routeName: '/schedule',
           ),
           _FooterNavItem(
             icon: Icons.settings,
