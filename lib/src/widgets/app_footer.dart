@@ -12,9 +12,21 @@ class AppFooter extends StatelessWidget {
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _FooterNavItem(icon: Icons.home, label: 'ホーム'),
-          _FooterNavItem(icon: Icons.calendar_today, label: 'スケジュール'),
-          _FooterNavItem(icon: Icons.settings, label: '設定'),
+          _FooterNavItem(
+            icon: Icons.home,
+            label: 'ホーム',
+            routeName: '/',
+          ),
+          _FooterNavItem(
+            icon: Icons.calendar_today,
+            label: 'スケジュール',
+            routeName: '/schedule',
+          ),
+          _FooterNavItem(
+            icon: Icons.settings,
+            label: '設定',
+            routeName: '/settings',
+          ),
         ],
       ),
     );
@@ -24,14 +36,16 @@ class AppFooter extends StatelessWidget {
 class _FooterNavItem extends StatelessWidget {
   final IconData icon;
   final String label;
-  const _FooterNavItem({required this.icon, required this.label});
+  final String routeName;
+
+  const _FooterNavItem(
+      {required this.icon, required this.label, required this.routeName});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // どのアイコンでも/sampleに遷移
-        router.pushNamed('/sample');
+        router.pushNamed(routeName);
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
