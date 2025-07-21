@@ -115,6 +115,41 @@ final categoryColors = Theme.of(context).extension<EventCategoryColors>();
 Color practiceColor = categoryColors?.practiceColor ?? Colors.blue;
 ```
 
+### デザインシステムの使用方法
+```dart
+import 'package:flutter_template/src/design_system/design_system.dart';
+
+// カラー使用例
+Container(
+  color: AppColors.primaryBlue,
+  child: Text(
+    'テキスト',
+    style: AppTypography.bodyMedium.copyWith(color: AppColors.white),
+  ),
+)
+
+// スペーシング使用例
+Padding(
+  padding: AppPadding.md, // 16px
+  child: Column(
+    children: [
+      Text('タイトル'),
+      AppGap.sm, // 8px の縦スペース
+      Text('内容'),
+    ],
+  ),
+)
+
+// レスポンシブレイアウト例
+AppLayout.centeredContent(
+  maxWidth: AppDimensions.maxContentWidth,
+  child: YourWidget(),
+)
+
+// カテゴリカラー取得
+Color categoryColor = DesignUtils.getCategoryColor(context, 'practice');
+```
+
 ### データベース（Drift）使用パターン
 ```dart
 // テーブル定義

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/src/const/app_theme.dart';
 import 'package:flutter_template/src/data/event.dart';
+import 'package:flutter_template/src/design_system/design_system.dart';
 import 'package:flutter_template/src/widgets/app_footer.dart';
 import 'package:flutter_template/src/widgets/hamburger_menu.dart';
 import 'package:intl/intl.dart';
@@ -27,7 +27,7 @@ class EventsPage extends StatelessWidget {
       ),
       drawer: const HamburgerMenu(),
       body: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: AppPadding.screen,
         itemCount: events.length,
         itemBuilder: (context, index) {
           final event = events[index];
@@ -99,25 +99,23 @@ class EventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textStyles = Theme.of(context).extension<AppTextStyles>();
+    
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: AppPadding.only(bottom: AppSpacing.md),
       child: Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
         child: InkWell(
           onTap: () {
             // TODO: イベント詳細画面への遷移
           },
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: AppRadius.cardRadius,
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: AppPadding.card,
             child: Row(
               children: [
                 // カテゴリアイコン
                 CategoryIcon(category: event.category),
-                const SizedBox(width: 16),
+                AppGap.horizontalMd,
                 // イベント情報
                 Expanded(
                   child: Column(
@@ -126,65 +124,62 @@ class EventCard extends StatelessWidget {
                       // タイトル
                       Text(
                         event.title,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: textStyles?.eventTitle ?? AppTypography.eventTitle,
                       ),
-                      const SizedBox(height: 8),
+                      AppGap.sm,
                       // 日時
                       Row(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.calendar_today,
-                            size: 16,
-                            color: Colors.grey,
+                            size: AppDimensions.iconSm,
+                            color: Theme.of(context).colorScheme.outline,
                           ),
-                          const SizedBox(width: 4),
+                          AppGap.horizontalXs,
                           Text(
                             _formatDateTime(event.dateTime),
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey,
-                            ),
+                            style: textStyles?.eventMetadata ?? 
+                                AppTypography.eventMetadata.copyWith(
+                                  color: Theme.of(context).colorScheme.outline,
+                                ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 4),
+                      AppGap.xs,
                       // 場所
                       Row(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.location_on,
-                            size: 16,
-                            color: Colors.grey,
+                            size: AppDimensions.iconSm,
+                            color: Theme.of(context).colorScheme.outline,
                           ),
-                          const SizedBox(width: 4),
+                          AppGap.horizontalXs,
                           Text(
                             event.location,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey,
-                            ),
+                            style: textStyles?.eventMetadata ?? 
+                                AppTypography.eventMetadata.copyWith(
+                                  color: Theme.of(context).colorScheme.outline,
+                                ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 4),
+                      AppGap.xs,
                       // 参加者数
                       Row(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.person,
-                            size: 16,
-                            color: Colors.grey,
+                            size: AppDimensions.iconSm,
+                            color: Theme.of(context).colorScheme.outline,
                           ),
-                          const SizedBox(width: 4),
+                          AppGap.horizontalXs,
                           Text(
                             '${event.participantCount}人',
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey,
-                            ),
+                            style: textStyles?.eventMetadata ?? 
+                                AppTypography.eventMetadata.copyWith(
+                                  color: Theme.of(context).colorScheme.outline,
+                                ),
                           ),
                         ],
                       ),
@@ -192,9 +187,10 @@ class EventCard extends StatelessWidget {
                   ),
                 ),
                 // 矢印アイコン
-                const Icon(
+                Icon(
                   Icons.chevron_right,
-                  color: Colors.grey,
+                  color: Theme.of(context).colorScheme.outline,
+                  size: AppDimensions.iconMd,
                 ),
               ],
             ),
@@ -218,35 +214,22 @@ class CategoryIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 48,
-      height: 48,
+      width: AppDimensions.eventCategoryIconSize,
+      height: AppDimensions.eventCategoryIconSize,
       decoration: BoxDecoration(
         color: _getCategoryColor(category.type, context),
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(AppDimensions.eventCategoryIconSize / 2),
       ),
       child: Icon(
         _getCategoryIcon(category.type),
-        color: Colors.white,
-        size: 24,
+        color: AppColors.white,
+        size: AppDimensions.iconMd,
       ),
     );
   }
 
   Color _getCategoryColor(EventCategoryType type, BuildContext context) {
-    final categoryColors = Theme.of(context).extension<EventCategoryColors>();
-    
-    switch (type) {
-      case EventCategoryType.practice:
-        return categoryColors?.practiceColor ?? Colors.blue;
-      case EventCategoryType.meeting:
-        return categoryColors?.meetingColor ?? Colors.purple;
-      case EventCategoryType.scrum:
-        return categoryColors?.scrumColor ?? Colors.green;
-      case EventCategoryType.social:
-        return categoryColors?.socialColor ?? Colors.orange;
-      case EventCategoryType.other:
-        return categoryColors?.otherColor ?? Colors.grey;
-    }
+    return DesignUtils.getCategoryColor(context, type.name);
   }
 
   IconData _getCategoryIcon(EventCategoryType type) {
