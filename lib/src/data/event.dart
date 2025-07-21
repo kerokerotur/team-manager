@@ -27,7 +27,8 @@ class EventCategory with _$EventCategory {
     required EventCategoryType type,
   }) = _EventCategory;
 
-  factory EventCategory.fromJson(Map<String, dynamic> json) => _$EventCategoryFromJson(json);
+  factory EventCategory.fromJson(Map<String, dynamic> json) =>
+      _$EventCategoryFromJson(json);
 }
 
 enum EventCategoryType {

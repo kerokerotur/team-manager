@@ -21,7 +21,7 @@ class ThemeModeNotifier extends StateNotifier<AppThemeMode> {
   Future<void> _loadThemeMode() async {
     final prefs = await SharedPreferences.getInstance();
     final savedMode = prefs.getString(_themeModeKey);
-    
+
     if (savedMode != null) {
       switch (savedMode) {
         case 'light':
@@ -58,7 +58,8 @@ class ThemeModeNotifier extends StateNotifier<AppThemeMode> {
 }
 
 // プロバイダー
-final themeModeProvider = StateNotifierProvider<ThemeModeNotifier, AppThemeMode>(
+final themeModeProvider =
+    StateNotifierProvider<ThemeModeNotifier, AppThemeMode>(
   (ref) => ThemeModeNotifier(),
 );
 

@@ -12,7 +12,7 @@ final ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
   colorScheme: LightColorScheme.scheme,
   textTheme: AppTextTheme.lightTextTheme,
-  
+
   // AppBar
   appBarTheme: AppBarTheme(
     backgroundColor: LightColorScheme.scheme.primary,
@@ -80,7 +80,7 @@ final ThemeData lightTheme = ThemeData(
         borderRadius: AppRadius.buttonRadius,
       ),
       textStyle: AppTypography.buttonText,
-      minimumSize: Size(
+      minimumSize: const Size(
         AppDimensions.buttonMinWidth,
         AppDimensions.buttonHeightMd,
       ),
@@ -93,11 +93,11 @@ final ThemeData lightTheme = ThemeData(
     fillColor: LightColorScheme.scheme.surface,
     border: OutlineInputBorder(
       borderRadius: AppRadius.inputRadius,
-      borderSide: BorderSide(color: AppColors.grey300),
+      borderSide: const BorderSide(color: AppColors.grey300),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: AppRadius.inputRadius,
-      borderSide: BorderSide(color: AppColors.grey300),
+      borderSide: const BorderSide(color: AppColors.grey300),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: AppRadius.inputRadius,
@@ -108,10 +108,10 @@ final ThemeData lightTheme = ThemeData(
 
   // カスタム拡張
   extensions: [
-    EventCategoryColors.light(),
+    const EventCategoryColors.light(),
     AppTextStyles.light(),
   ],
-  
+
   useMaterial3: true,
 );
 
@@ -120,7 +120,7 @@ final ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   colorScheme: DarkColorScheme.scheme,
   textTheme: AppTextTheme.darkTextTheme,
-  
+
   // AppBar
   appBarTheme: AppBarTheme(
     backgroundColor: DarkColorScheme.scheme.surface,
@@ -188,7 +188,7 @@ final ThemeData darkTheme = ThemeData(
         borderRadius: AppRadius.buttonRadius,
       ),
       textStyle: AppTypography.buttonText,
-      minimumSize: Size(
+      minimumSize: const Size(
         AppDimensions.buttonMinWidth,
         AppDimensions.buttonHeightMd,
       ),
@@ -201,11 +201,11 @@ final ThemeData darkTheme = ThemeData(
     fillColor: DarkColorScheme.scheme.surface,
     border: OutlineInputBorder(
       borderRadius: AppRadius.inputRadius,
-      borderSide: BorderSide(color: AppColors.grey600),
+      borderSide: const BorderSide(color: AppColors.grey600),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: AppRadius.inputRadius,
-      borderSide: BorderSide(color: AppColors.grey600),
+      borderSide: const BorderSide(color: AppColors.grey600),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: AppRadius.inputRadius,
@@ -216,10 +216,10 @@ final ThemeData darkTheme = ThemeData(
 
   // カスタム拡張
   extensions: [
-    EventCategoryColors.dark(),
+    const EventCategoryColors.dark(),
     AppTextStyles.dark(),
   ],
-  
+
   useMaterial3: true,
 );
 

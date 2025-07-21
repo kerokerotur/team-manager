@@ -32,9 +32,9 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final locales = ref.watch(localesProvider);
     final themeMode = ref.watch(flutterThemeModeProvider);
-    
+
     ref.read(localesProvider.notifier).setup();
-    
+
     return MaterialApp.router(
       title: 'Team Manager',
       theme: lightTheme,

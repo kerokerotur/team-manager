@@ -56,15 +56,18 @@ class _FooterNavItem extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
-            icon, 
-            size: 28, 
-            color: Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
+            icon,
+            size: 28,
+            color:
+                Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
           ),
           const SizedBox(height: 4),
           Text(
             label,
             style: TextStyle(
-              color: Theme.of(context).bottomNavigationBarTheme.unselectedItemColor, 
+              color: Theme.of(context)
+                  .bottomNavigationBarTheme
+                  .unselectedItemColor,
               fontSize: 12,
             ),
           ),

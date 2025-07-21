@@ -8,7 +8,7 @@ class AppTypography {
   // フォントファミリー
   static const String primaryFontFamily = 'NotoSansJP';
   static const String secondaryFontFamily = 'Roboto';
-  
+
   // フォントウェイト
   static const FontWeight light = FontWeight.w300;
   static const FontWeight regular = FontWeight.w400;

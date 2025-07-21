@@ -102,7 +102,7 @@ class AppLayout {
   /// 現在の画面サイズに基づいてデバイスタイプを判定
   static DeviceType getDeviceType(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    
+
     if (screenWidth < AppDimensions.tabletMinWidth) {
       return DeviceType.mobile;
     } else if (screenWidth < AppDimensions.desktopMinWidth) {
@@ -115,7 +115,7 @@ class AppLayout {
   /// レスポンシブパディングを取得
   static EdgeInsets getResponsivePadding(BuildContext context) {
     final deviceType = getDeviceType(context);
-    
+
     switch (deviceType) {
       case DeviceType.mobile:
         return const EdgeInsets.all(16);
@@ -129,7 +129,7 @@ class AppLayout {
   /// レスポンシブカラム数を取得
   static int getResponsiveColumns(BuildContext context) {
     final deviceType = getDeviceType(context);
-    
+
     switch (deviceType) {
       case DeviceType.mobile:
         return 1;

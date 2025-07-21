@@ -50,16 +50,16 @@ class AppColors {
   // イベントカテゴリ専用カラー
   static const Color categoryPractice = primaryBlue;
   static const Color categoryPracticeLight = primaryBlueLight;
-  
+
   static const Color categoryMeeting = Color(0xFF9C27B0);
   static const Color categoryMeetingLight = Color(0xFFBA68C8);
-  
+
   static const Color categoryScrum = success;
   static const Color categoryScrumLight = successLight;
-  
+
   static const Color categorySocial = warning;
   static const Color categorySocialLight = warningLight;
-  
+
   static const Color categoryOther = grey500;
   static const Color categoryOtherLight = grey400;
 
@@ -83,12 +83,10 @@ class LightColorScheme {
     onSecondary: AppColors.black,
     surface: AppColors.white,
     onSurface: AppColors.grey900,
-    background: AppColors.grey50,
-    onBackground: AppColors.grey900,
     error: AppColors.error,
     onError: AppColors.white,
     outline: AppColors.grey300,
-    surfaceVariant: AppColors.grey100,
+    surfaceContainerHighest: AppColors.grey100,
     onSurfaceVariant: AppColors.grey700,
   );
 }
@@ -102,12 +100,10 @@ class DarkColorScheme {
     onSecondary: AppColors.black,
     surface: AppColors.grey850,
     onSurface: AppColors.white,
-    background: AppColors.grey900,
-    onBackground: AppColors.white,
     error: AppColors.errorLight,
     onError: AppColors.black,
     outline: AppColors.grey600,
-    surfaceVariant: AppColors.grey800,
+    surfaceContainerHighest: AppColors.grey800,
     onSurfaceVariant: AppColors.grey300,
   );
 }
@@ -161,7 +157,8 @@ class EventCategoryColors extends ThemeExtension<EventCategoryColors> {
   }
 
   @override
-  EventCategoryColors lerp(ThemeExtension<EventCategoryColors>? other, double t) {
+  EventCategoryColors lerp(
+      ThemeExtension<EventCategoryColors>? other, double t) {
     if (other is! EventCategoryColors) {
       return this;
     }

@@ -1,18 +1,18 @@
 /// Team Manager アプリケーションのデザインシステム
-/// 
+///
 /// このファイルは、アプリ全体で使用するデザイントークンとコンポーネントの
 /// 一元的なエクスポートポイントです。
-/// 
+///
 /// デザインシステムは以下の要素で構成されています：
 /// - Colors: カラーパレットとテーマカラー
 /// - Typography: フォント、文字サイズ、行間
 /// - Spacing: 余白、間隔、パディング
 /// - Dimensions: コンポーネントサイズ、レイアウト
-/// 
+///
 /// 使用例:
 /// ```dart
 /// import 'package:flutter_template/src/design_system/design_system.dart';
-/// 
+///
 /// Container(
 ///   padding: AppPadding.md,
 ///   decoration: BoxDecoration(
@@ -133,16 +133,16 @@ class DesignSystemGuide {
 
   /// デザインシステムのバージョン情報
   static const String version = '1.0.0';
-  
+
   /// 最終更新日
   static const String lastUpdated = '2025-01-21';
 
   /// 利用可能なBreakpointの取得
   static Map<String, double> get breakpoints => {
-    'mobile': AppDimensions.mobileMaxWidth,
-    'tablet': AppDimensions.tabletMinWidth,
-    'desktop': AppDimensions.desktopMinWidth,
-  };
+        'mobile': AppDimensions.mobileMaxWidth,
+        'tablet': AppDimensions.tabletMinWidth,
+        'desktop': AppDimensions.desktopMinWidth,
+      };
 
   /// デザインシステムの健全性チェック
   static bool validate() {
@@ -175,7 +175,7 @@ class DesignUtils {
     String categoryType,
   ) {
     final categoryColors = Theme.of(context).extension<EventCategoryColors>();
-    
+
     switch (categoryType.toLowerCase()) {
       case 'practice':
         return categoryColors?.practiceColor ?? AppColors.categoryPractice;
@@ -198,7 +198,7 @@ class DesignUtils {
     T? desktop,
   }) {
     final deviceType = AppLayout.getDeviceType(context);
-    
+
     switch (deviceType) {
       case DeviceType.mobile:
         return mobile;
@@ -222,7 +222,7 @@ class DesignUtils {
   static Color getAccessibleTextColor(Color backgroundColor) {
     final whiteContrast = getContrastRatio(backgroundColor, AppColors.white);
     final blackContrast = getContrastRatio(backgroundColor, AppColors.black);
-    
+
     // WCAG AA基準（4.5:1）を満たす色を選択
     return whiteContrast >= blackContrast ? AppColors.white : AppColors.black;
   }

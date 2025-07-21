@@ -85,23 +85,35 @@ class AppPadding {
   static const EdgeInsets xxl = EdgeInsets.all(AppSpacing.xxl);
 
   // 水平パディング
-  static const EdgeInsets horizontalXs = EdgeInsets.symmetric(horizontal: AppSpacing.xs);
-  static const EdgeInsets horizontalSm = EdgeInsets.symmetric(horizontal: AppSpacing.sm);
-  static const EdgeInsets horizontalMd = EdgeInsets.symmetric(horizontal: AppSpacing.md);
-  static const EdgeInsets horizontalLg = EdgeInsets.symmetric(horizontal: AppSpacing.lg);
-  static const EdgeInsets horizontalXl = EdgeInsets.symmetric(horizontal: AppSpacing.xl);
+  static const EdgeInsets horizontalXs =
+      EdgeInsets.symmetric(horizontal: AppSpacing.xs);
+  static const EdgeInsets horizontalSm =
+      EdgeInsets.symmetric(horizontal: AppSpacing.sm);
+  static const EdgeInsets horizontalMd =
+      EdgeInsets.symmetric(horizontal: AppSpacing.md);
+  static const EdgeInsets horizontalLg =
+      EdgeInsets.symmetric(horizontal: AppSpacing.lg);
+  static const EdgeInsets horizontalXl =
+      EdgeInsets.symmetric(horizontal: AppSpacing.xl);
 
   // 垂直パディング
-  static const EdgeInsets verticalXs = EdgeInsets.symmetric(vertical: AppSpacing.xs);
-  static const EdgeInsets verticalSm = EdgeInsets.symmetric(vertical: AppSpacing.sm);
-  static const EdgeInsets verticalMd = EdgeInsets.symmetric(vertical: AppSpacing.md);
-  static const EdgeInsets verticalLg = EdgeInsets.symmetric(vertical: AppSpacing.lg);
-  static const EdgeInsets verticalXl = EdgeInsets.symmetric(vertical: AppSpacing.xl);
+  static const EdgeInsets verticalXs =
+      EdgeInsets.symmetric(vertical: AppSpacing.xs);
+  static const EdgeInsets verticalSm =
+      EdgeInsets.symmetric(vertical: AppSpacing.sm);
+  static const EdgeInsets verticalMd =
+      EdgeInsets.symmetric(vertical: AppSpacing.md);
+  static const EdgeInsets verticalLg =
+      EdgeInsets.symmetric(vertical: AppSpacing.lg);
+  static const EdgeInsets verticalXl =
+      EdgeInsets.symmetric(vertical: AppSpacing.xl);
 
   // 画面レベルのパディング
   static const EdgeInsets screen = EdgeInsets.all(AppSpacing.screenPadding);
-  static const EdgeInsets screenHorizontal = EdgeInsets.symmetric(horizontal: AppSpacing.screenPadding);
-  static const EdgeInsets screenVertical = EdgeInsets.symmetric(vertical: AppSpacing.screenPadding);
+  static const EdgeInsets screenHorizontal =
+      EdgeInsets.symmetric(horizontal: AppSpacing.screenPadding);
+  static const EdgeInsets screenVertical =
+      EdgeInsets.symmetric(vertical: AppSpacing.screenPadding);
 
   // コンポーネント別パディング
   static const EdgeInsets card = EdgeInsets.all(AppSpacing.cardPadding);
@@ -185,7 +197,10 @@ class AppRadius {
   static BorderRadius circularRadius = BorderRadius.circular(circular);
 
   // 特定用途のRadius
-  static BorderRadius cardRadius = BorderRadius.circular(AppSpacing.cardBorderRadius);
-  static BorderRadius buttonRadius = BorderRadius.circular(AppSpacing.buttonBorderRadius);
-  static BorderRadius inputRadius = BorderRadius.circular(AppSpacing.inputBorderRadius);
+  static BorderRadius cardRadius =
+      BorderRadius.circular(AppSpacing.cardBorderRadius);
+  static BorderRadius buttonRadius =
+      BorderRadius.circular(AppSpacing.buttonBorderRadius);
+  static BorderRadius inputRadius =
+      BorderRadius.circular(AppSpacing.inputBorderRadius);
 }

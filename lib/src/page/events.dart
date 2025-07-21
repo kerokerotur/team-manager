@@ -100,7 +100,7 @@ class EventCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textStyles = Theme.of(context).extension<AppTextStyles>();
-    
+
     return Container(
       margin: AppPadding.only(bottom: AppSpacing.md),
       child: Card(
@@ -124,7 +124,8 @@ class EventCard extends StatelessWidget {
                       // タイトル
                       Text(
                         event.title,
-                        style: textStyles?.eventTitle ?? AppTypography.eventTitle,
+                        style:
+                            textStyles?.eventTitle ?? AppTypography.eventTitle,
                       ),
                       AppGap.sm,
                       // 日時
@@ -138,7 +139,7 @@ class EventCard extends StatelessWidget {
                           AppGap.horizontalXs,
                           Text(
                             _formatDateTime(event.dateTime),
-                            style: textStyles?.eventMetadata ?? 
+                            style: textStyles?.eventMetadata ??
                                 AppTypography.eventMetadata.copyWith(
                                   color: Theme.of(context).colorScheme.outline,
                                 ),
@@ -157,7 +158,7 @@ class EventCard extends StatelessWidget {
                           AppGap.horizontalXs,
                           Text(
                             event.location,
-                            style: textStyles?.eventMetadata ?? 
+                            style: textStyles?.eventMetadata ??
                                 AppTypography.eventMetadata.copyWith(
                                   color: Theme.of(context).colorScheme.outline,
                                 ),
@@ -176,7 +177,7 @@ class EventCard extends StatelessWidget {
                           AppGap.horizontalXs,
                           Text(
                             '${event.participantCount}人',
-                            style: textStyles?.eventMetadata ?? 
+                            style: textStyles?.eventMetadata ??
                                 AppTypography.eventMetadata.copyWith(
                                   color: Theme.of(context).colorScheme.outline,
                                 ),
@@ -218,7 +219,8 @@ class CategoryIcon extends StatelessWidget {
       height: AppDimensions.eventCategoryIconSize,
       decoration: BoxDecoration(
         color: _getCategoryColor(category.type, context),
-        borderRadius: BorderRadius.circular(AppDimensions.eventCategoryIconSize / 2),
+        borderRadius:
+            BorderRadius.circular(AppDimensions.eventCategoryIconSize / 2),
       ),
       child: Icon(
         _getCategoryIcon(category.type),

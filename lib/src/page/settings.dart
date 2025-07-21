@@ -10,7 +10,7 @@ class SettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentThemeMode = ref.watch(themeModeProvider);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('設定'),
@@ -35,9 +35,10 @@ class SettingsPage extends ConsumerWidget {
                       const SizedBox(width: 8),
                       Text(
                         'テーマ設定',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                       ),
                     ],
                   ),
@@ -51,12 +52,16 @@ class SettingsPage extends ConsumerWidget {
                       groupValue: currentThemeMode,
                       onChanged: (value) {
                         if (value != null) {
-                          ref.read(themeModeProvider.notifier).setThemeMode(value);
+                          ref
+                              .read(themeModeProvider.notifier)
+                              .setThemeMode(value);
                         }
                       },
                     ),
                     onTap: () {
-                      ref.read(themeModeProvider.notifier).setThemeMode(AppThemeMode.light);
+                      ref
+                          .read(themeModeProvider.notifier)
+                          .setThemeMode(AppThemeMode.light);
                     },
                   ),
                   // ダークモード
@@ -68,12 +73,16 @@ class SettingsPage extends ConsumerWidget {
                       groupValue: currentThemeMode,
                       onChanged: (value) {
                         if (value != null) {
-                          ref.read(themeModeProvider.notifier).setThemeMode(value);
+                          ref
+                              .read(themeModeProvider.notifier)
+                              .setThemeMode(value);
                         }
                       },
                     ),
                     onTap: () {
-                      ref.read(themeModeProvider.notifier).setThemeMode(AppThemeMode.dark);
+                      ref
+                          .read(themeModeProvider.notifier)
+                          .setThemeMode(AppThemeMode.dark);
                     },
                   ),
                   // システム設定に従う
@@ -86,12 +95,16 @@ class SettingsPage extends ConsumerWidget {
                       groupValue: currentThemeMode,
                       onChanged: (value) {
                         if (value != null) {
-                          ref.read(themeModeProvider.notifier).setThemeMode(value);
+                          ref
+                              .read(themeModeProvider.notifier)
+                              .setThemeMode(value);
                         }
                       },
                     ),
                     onTap: () {
-                      ref.read(themeModeProvider.notifier).setThemeMode(AppThemeMode.system);
+                      ref
+                          .read(themeModeProvider.notifier)
+                          .setThemeMode(AppThemeMode.system);
                     },
                   ),
                 ],
@@ -115,9 +128,10 @@ class SettingsPage extends ConsumerWidget {
                       const SizedBox(width: 8),
                       Text(
                         'その他の設定',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                       ),
                     ],
                   ),
