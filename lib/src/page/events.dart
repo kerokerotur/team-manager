@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_template/src/const/app_theme.dart';
 import 'package:flutter_template/src/data/event.dart';
 import 'package:flutter_template/src/widgets/app_footer.dart';
 import 'package:flutter_template/src/widgets/hamburger_menu.dart';
@@ -220,7 +221,7 @@ class CategoryIcon extends StatelessWidget {
       width: 48,
       height: 48,
       decoration: BoxDecoration(
-        color: _getCategoryColor(category.type),
+        color: _getCategoryColor(category.type, context),
         borderRadius: BorderRadius.circular(24),
       ),
       child: Icon(
@@ -231,18 +232,20 @@ class CategoryIcon extends StatelessWidget {
     );
   }
 
-  Color _getCategoryColor(EventCategoryType type) {
+  Color _getCategoryColor(EventCategoryType type, BuildContext context) {
+    final categoryColors = Theme.of(context).extension<EventCategoryColors>();
+    
     switch (type) {
       case EventCategoryType.practice:
-        return Colors.blue;
+        return categoryColors?.practiceColor ?? Colors.blue;
       case EventCategoryType.meeting:
-        return Colors.purple;
+        return categoryColors?.meetingColor ?? Colors.purple;
       case EventCategoryType.scrum:
-        return Colors.green;
+        return categoryColors?.scrumColor ?? Colors.green;
       case EventCategoryType.social:
-        return Colors.orange;
+        return categoryColors?.socialColor ?? Colors.orange;
       case EventCategoryType.other:
-        return Colors.grey;
+        return categoryColors?.otherColor ?? Colors.grey;
     }
   }
 

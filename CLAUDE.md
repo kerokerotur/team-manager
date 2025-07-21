@@ -105,6 +105,16 @@ final dataProvider = StateNotifierProvider<DataNotifier, List<Data>>(
 );
 ```
 
+### テーマ機能の使用方法
+```dart
+// テーマ切り替え
+ref.read(themeModeProvider.notifier).setThemeMode(AppThemeMode.light);
+
+// カスタムカラーの使用
+final categoryColors = Theme.of(context).extension<EventCategoryColors>();
+Color practiceColor = categoryColors?.practiceColor ?? Colors.blue;
+```
+
 ### データベース（Drift）使用パターン
 ```dart
 // テーブル定義
