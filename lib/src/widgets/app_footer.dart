@@ -18,13 +18,18 @@ class AppFooter extends StatelessWidget {
             routeName: '/',
           ),
           _FooterNavItem(
+            icon: Icons.event,
+            label: 'イベント',
+            routeName: '/events',
+          ),
+          _FooterNavItem(
             icon: Icons.calendar_today,
-            label: 'スケジュール',
+            label: 'カレンダー',
             routeName: '/schedule',
           ),
           _FooterNavItem(
-            icon: Icons.settings,
-            label: '設定',
+            icon: Icons.person,
+            label: 'プロフィール',
             routeName: '/settings',
           ),
         ],
