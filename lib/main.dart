@@ -3,6 +3,7 @@ import 'package:flutter_template/gen/assets.gen.dart';
 import 'package:flutter_template/gen_l10n/app_localizations.dart';
 import 'package:flutter_template/src/common/domain/locale/locales.dart';
 import 'package:flutter_template/src/common/domain/locale/locales_provider.dart';
+import 'package:flutter_template/src/common/domain/theme/theme_provider.dart';
 import 'package:flutter_template/src/const/app_theme.dart';
 import 'package:flutter_template/src/plugins/firebase/cloud_messaging.dart';
 import 'package:flutter_template/src/plugins/local_notifications/local_notification_service.dart';
@@ -30,10 +31,15 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locales = ref.watch(localesProvider);
+    final themeMode = ref.watch(flutterThemeModeProvider);
+
     ref.read(localesProvider.notifier).setup();
+
     return MaterialApp.router(
-      title: 'Flutter Demo',
-      theme: appTheme,
+      title: 'Team Manager',
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: themeMode,
       routeInformationProvider: router.routeInformationProvider,
       routeInformationParser: router.routeInformationParser,
       routerDelegate: router.routerDelegate,

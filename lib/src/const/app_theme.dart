@@ -1,35 +1,227 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_template/src/design_system/colors.dart';
+import 'package:flutter_template/src/design_system/typography.dart';
+import 'package:flutter_template/src/design_system/spacing.dart';
+import 'package:flutter_template/src/design_system/dimensions.dart';
 
-final ThemeData appTheme = ThemeData(
-  brightness: Brightness.dark,
-  primaryColor: Colors.blueGrey,
-  scaffoldBackgroundColor: Colors.grey[900],
-  colorScheme: ColorScheme.dark(
-    primary: Colors.blueGrey,
-    secondary: Colors.cyanAccent,
-    surface: Colors.grey[850]!,
-    onPrimary: Colors.white,
-    onSecondary: Colors.black,
-    onSurface: Colors.white,
-    onError: Colors.white,
-    brightness: Brightness.dark,
-  ),
+/// アプリケーションのテーマ定義
+/// デザインシステムに基づいたライト・ダークテーマの構築
+
+// ライトテーマ
+final ThemeData lightTheme = ThemeData(
+  brightness: Brightness.light,
+  colorScheme: LightColorScheme.scheme,
+  textTheme: AppTextTheme.lightTextTheme,
+
+  // AppBar
   appBarTheme: AppBarTheme(
-    backgroundColor: Colors.grey[850],
-    elevation: 0,
-    titleTextStyle: const TextStyle(
-      color: Colors.white,
-      fontSize: 20,
-      fontWeight: FontWeight.bold,
+    backgroundColor: LightColorScheme.scheme.primary,
+    foregroundColor: LightColorScheme.scheme.onPrimary,
+    elevation: AppElevation.appBar,
+    titleTextStyle: AppTypography.appBarTitle.copyWith(
+      color: LightColorScheme.scheme.onPrimary,
     ),
-    iconTheme: const IconThemeData(color: Colors.white),
+    iconTheme: IconThemeData(
+      color: LightColorScheme.scheme.onPrimary,
+      size: AppDimensions.iconMd,
+    ),
   ),
+
+  // Card
+  cardTheme: CardTheme(
+    color: LightColorScheme.scheme.surface,
+    shadowColor: AppColors.shadowLight,
+    elevation: AppElevation.card,
+    shape: RoundedRectangleBorder(
+      borderRadius: AppRadius.cardRadius,
+    ),
+    margin: AppPadding.symmetric(
+      horizontal: AppSpacing.sm,
+      vertical: AppSpacing.xs,
+    ),
+  ),
+
+  // FloatingActionButton
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+    backgroundColor: LightColorScheme.scheme.primary,
+    foregroundColor: LightColorScheme.scheme.onPrimary,
+    elevation: AppElevation.fab,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(AppDimensions.fabSize / 2),
+    ),
+  ),
+
+  // BottomNavigationBar
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    backgroundColor: AppColors.grey100,
+    selectedItemColor: LightColorScheme.scheme.primary,
+    unselectedItemColor: AppColors.grey500,
+    type: BottomNavigationBarType.fixed,
+    elevation: AppElevation.medium,
+  ),
+
+  // Drawer
   drawerTheme: DrawerThemeData(
-    backgroundColor: Colors.grey[900],
+    backgroundColor: LightColorScheme.scheme.surface,
+    elevation: AppElevation.drawer,
   ),
-  floatingActionButtonTheme: const FloatingActionButtonThemeData(
-    backgroundColor: Colors.cyanAccent,
-    foregroundColor: Colors.black,
+
+  // Button
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: LightColorScheme.scheme.primary,
+      foregroundColor: LightColorScheme.scheme.onPrimary,
+      elevation: AppElevation.button,
+      padding: AppPadding.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: AppSpacing.sm,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: AppRadius.buttonRadius,
+      ),
+      textStyle: AppTypography.buttonText,
+      minimumSize: const Size(
+        AppDimensions.buttonMinWidth,
+        AppDimensions.buttonHeightMd,
+      ),
+    ),
   ),
+
+  // Input
+  inputDecorationTheme: InputDecorationTheme(
+    filled: true,
+    fillColor: LightColorScheme.scheme.surface,
+    border: OutlineInputBorder(
+      borderRadius: AppRadius.inputRadius,
+      borderSide: const BorderSide(color: AppColors.grey300),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: AppRadius.inputRadius,
+      borderSide: const BorderSide(color: AppColors.grey300),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: AppRadius.inputRadius,
+      borderSide: BorderSide(color: LightColorScheme.scheme.primary),
+    ),
+    contentPadding: AppPadding.md,
+  ),
+
+  // カスタム拡張
+  extensions: [
+    const EventCategoryColors.light(),
+    AppTextStyles.light(),
+  ],
+
   useMaterial3: true,
 );
+
+// ダークテーマ
+final ThemeData darkTheme = ThemeData(
+  brightness: Brightness.dark,
+  colorScheme: DarkColorScheme.scheme,
+  textTheme: AppTextTheme.darkTextTheme,
+
+  // AppBar
+  appBarTheme: AppBarTheme(
+    backgroundColor: DarkColorScheme.scheme.surface,
+    foregroundColor: DarkColorScheme.scheme.onSurface,
+    elevation: AppElevation.appBar,
+    titleTextStyle: AppTypography.appBarTitle.copyWith(
+      color: DarkColorScheme.scheme.onSurface,
+    ),
+    iconTheme: IconThemeData(
+      color: DarkColorScheme.scheme.onSurface,
+      size: AppDimensions.iconMd,
+    ),
+  ),
+
+  // Card
+  cardTheme: CardTheme(
+    color: DarkColorScheme.scheme.surface,
+    shadowColor: AppColors.shadowDark,
+    elevation: AppElevation.card,
+    shape: RoundedRectangleBorder(
+      borderRadius: AppRadius.cardRadius,
+    ),
+    margin: AppPadding.symmetric(
+      horizontal: AppSpacing.sm,
+      vertical: AppSpacing.xs,
+    ),
+  ),
+
+  // FloatingActionButton
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+    backgroundColor: DarkColorScheme.scheme.primary,
+    foregroundColor: DarkColorScheme.scheme.onPrimary,
+    elevation: AppElevation.fab,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(AppDimensions.fabSize / 2),
+    ),
+  ),
+
+  // BottomNavigationBar
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    backgroundColor: AppColors.grey850,
+    selectedItemColor: DarkColorScheme.scheme.primary,
+    unselectedItemColor: AppColors.grey500,
+    type: BottomNavigationBarType.fixed,
+    elevation: AppElevation.medium,
+  ),
+
+  // Drawer
+  drawerTheme: DrawerThemeData(
+    backgroundColor: DarkColorScheme.scheme.surface,
+    elevation: AppElevation.drawer,
+  ),
+
+  // Button
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: DarkColorScheme.scheme.primary,
+      foregroundColor: DarkColorScheme.scheme.onPrimary,
+      elevation: AppElevation.button,
+      padding: AppPadding.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: AppSpacing.sm,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: AppRadius.buttonRadius,
+      ),
+      textStyle: AppTypography.buttonText,
+      minimumSize: const Size(
+        AppDimensions.buttonMinWidth,
+        AppDimensions.buttonHeightMd,
+      ),
+    ),
+  ),
+
+  // Input
+  inputDecorationTheme: InputDecorationTheme(
+    filled: true,
+    fillColor: DarkColorScheme.scheme.surface,
+    border: OutlineInputBorder(
+      borderRadius: AppRadius.inputRadius,
+      borderSide: const BorderSide(color: AppColors.grey600),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: AppRadius.inputRadius,
+      borderSide: const BorderSide(color: AppColors.grey600),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: AppRadius.inputRadius,
+      borderSide: BorderSide(color: DarkColorScheme.scheme.primary),
+    ),
+    contentPadding: AppPadding.md,
+  ),
+
+  // カスタム拡張
+  extensions: [
+    const EventCategoryColors.dark(),
+    AppTextStyles.dark(),
+  ],
+
+  useMaterial3: true,
+);
+
+// 後方互換性のため
+final ThemeData appTheme = darkTheme;

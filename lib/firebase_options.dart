@@ -85,5 +85,4 @@ class DefaultFirebaseOptions {
     projectId: 'flutter-template-e38b7',
     storageBucket: 'flutter-template-e38b7.firebasestorage.app',
   );
-
 }

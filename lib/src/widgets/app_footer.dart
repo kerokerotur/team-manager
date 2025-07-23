@@ -8,7 +8,7 @@ class AppFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 0),
-      color: Colors.grey[200],
+      color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -18,13 +18,18 @@ class AppFooter extends StatelessWidget {
             routeName: '/',
           ),
           _FooterNavItem(
+            icon: Icons.event,
+            label: 'イベント',
+            routeName: '/events',
+          ),
+          _FooterNavItem(
             icon: Icons.calendar_today,
-            label: 'スケジュール',
+            label: 'カレンダー',
             routeName: '/schedule',
           ),
           _FooterNavItem(
-            icon: Icons.settings,
-            label: '設定',
+            icon: Icons.person,
+            label: 'プロフィール',
             routeName: '/settings',
           ),
         ],
@@ -50,11 +55,21 @@ class _FooterNavItem extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 28, color: Colors.grey),
+          Icon(
+            icon,
+            size: 28,
+            color:
+                Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
+          ),
           const SizedBox(height: 4),
           Text(
             label,
-            style: const TextStyle(color: Colors.grey, fontSize: 12),
+            style: TextStyle(
+              color: Theme.of(context)
+                  .bottomNavigationBarTheme
+                  .unselectedItemColor,
+              fontSize: 12,
+            ),
           ),
         ],
       ),
