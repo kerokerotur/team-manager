@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_template/src/widgets/app_footer.dart';
 import 'package:flutter_template/src/widgets/hamburger_menu.dart';
+import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // イベントを表すシンプルなクラス
@@ -21,7 +23,6 @@ class SchedulePage extends StatefulWidget {
 }
 
 class _SchedulePageState extends State<SchedulePage> {
-  late final ValueNotifier<List<Event>> _selectedEvents;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
@@ -41,13 +42,70 @@ class _SchedulePageState extends State<SchedulePage> {
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
-    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
   }
 
-  @override
-  void dispose() {
-    _selectedEvents.dispose();
-    super.dispose();
+  void _showEventsBottomSheet(BuildContext context, DateTime day) {
+    final events = _getEventsForDay(day);
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height * 0.75,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      DateFormat('M/d (E)', 'en_US').format(day),
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.add),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        context.pushNamed(
+                          '/add-event',
+                          queryParameters: {
+                            'date': day.toIso8601String().split('T')[0],
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: events.isEmpty
+                    ? const Center(child: Text('予定はありません'))
+                    : ListView.builder(
+                        itemCount: events.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 12.0,
+                              vertical: 4.0,
+                            ),
+                            decoration: BoxDecoration(
+                              border: Border.all(),
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            child: ListTile(
+                              onTap: () => print('${events[index]}'),
+                              title: Text('${events[index]}'),
+                            ),
+                          );
+                        },
+                      ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -66,18 +124,111 @@ class _SchedulePageState extends State<SchedulePage> {
             selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
             eventLoader: _getEventsForDay,
             onDaySelected: (selectedDay, focusedDay) {
-              if (!isSameDay(_selectedDay, selectedDay)) {
-                setState(() {
-                  _selectedDay = selectedDay;
-                  _focusedDay = focusedDay;
-                });
-                _selectedEvents.value = _getEventsForDay(selectedDay);
-              }
+              setState(() {
+                _selectedDay = selectedDay;
+                _focusedDay = focusedDay;
+              });
+              _showEventsBottomSheet(context, selectedDay);
             },
             onPageChanged: (focusedDay) {
               _focusedDay = focusedDay;
             },
             calendarBuilders: CalendarBuilders(
+              dowBuilder: (context, day) {
+                final text = DateFormat.E('en_US').format(day);
+                if (day.weekday == DateTime.sunday) {
+                  return Center(
+                    child: Text(
+                      text,
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  );
+                }
+                if (day.weekday == DateTime.saturday) {
+                  return Center(
+                    child: Text(
+                      text,
+                      style: const TextStyle(color: Colors.blue),
+                    ),
+                  );
+                }
+                return Center(
+                  child: Text(
+                    text,
+                  ),
+                );
+              },
+              defaultBuilder: (context, day, focusedDay) {
+                if (day.weekday == DateTime.sunday) {
+                  return Center(
+                    child: Text(
+                      '${day.day}',
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  );
+                }
+                if (day.weekday == DateTime.saturday) {
+                  return Center(
+                    child: Text(
+                      '${day.day}',
+                      style: const TextStyle(color: Colors.blue),
+                    ),
+                  );
+                }
+                return null;
+              },
+              outsideBuilder: (context, day, focusedDay) {
+                final isSunday = day.weekday == DateTime.sunday;
+                final isSaturday = day.weekday == DateTime.saturday;
+                final color = isSunday
+                    ? Colors.red.withOpacity(0.5)
+                    : isSaturday
+                        ? Colors.blue.withOpacity(0.5)
+                        : Colors.grey.withOpacity(0.5);
+
+                return Center(
+                  child: Text(
+                    '${day.day}',
+                    style: TextStyle(color: color),
+                  ),
+                );
+              },
+              todayBuilder: (context, day, focusedDay) {
+                TextStyle? textStyle;
+                if (day.weekday == DateTime.sunday) {
+                  textStyle = const TextStyle(color: Colors.red);
+                } else if (day.weekday == DateTime.saturday) {
+                  textStyle = const TextStyle(color: Colors.blue);
+                }
+                return Container(
+                  margin: const EdgeInsets.all(4.0),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor.withOpacity(0.3),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                    child: Text(
+                      '${day.day}',
+                      style: textStyle,
+                    ),
+                  ),
+                );
+              },
+              selectedBuilder: (context, day, focusedDay) {
+                return Container(
+                  margin: const EdgeInsets.all(4.0),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                    child: Text(
+                      '${day.day}',
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                );
+              },
               markerBuilder: (context, date, events) {
                 if (events.isNotEmpty) {
                   return Positioned(
@@ -86,33 +237,6 @@ class _SchedulePageState extends State<SchedulePage> {
                   );
                 }
                 return null;
-              },
-            ),
-          ),
-          const SizedBox(height: 8.0),
-          Expanded(
-            child: ValueListenableBuilder<List<Event>>(
-              valueListenable: _selectedEvents,
-              builder: (context, value, _) {
-                return ListView.builder(
-                  itemCount: value.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 4.0,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      child: ListTile(
-                        onTap: () => print('${value[index]}'),
-                        title: Text('${value[index]}'),
-                      ),
-                    );
-                  },
-                );
               },
             ),
           ),
