@@ -1,22 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_template/src/widgets/app_footer.dart';
 import 'package:flutter_template/src/widgets/hamburger_menu.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_template/src/widgets/event_bottom_sheet.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-// イベントを表すシンプルなクラス
-class Event {
-  final String title;
-
-  Event(this.title);
-
-  @override
-  String toString() => title;
-}
-
 class SchedulePage extends StatefulWidget {
-  const SchedulePage({Key? key}) : super(key: key);
+  const SchedulePage({super.key});
 
   @override
   State<SchedulePage> createState() => _SchedulePageState();
@@ -44,65 +34,29 @@ class _SchedulePageState extends State<SchedulePage> {
     _selectedDay = _focusedDay;
   }
 
+  void _handleEventSave(String title, String description, DateTime date, TimeOfDay? time) {
+    // TODO: 実際の保存処理を実装
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('予定を保存しました')),
+    );
+  }
+
+  void _handleEventTap(Event event) {
+    // TODO: イベント詳細画面への遷移を実装
+    debugPrint('Event tapped: $event');
+  }
+
   void _showEventsBottomSheet(BuildContext context, DateTime day) {
     final events = _getEventsForDay(day);
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       builder: (context) {
-        return SizedBox(
-          height: MediaQuery.of(context).size.height * 0.75,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      DateFormat('M/d (E)', 'en_US').format(day),
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.add),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        context.pushNamed(
-                          '/add-event',
-                          queryParameters: {
-                            'date': day.toIso8601String().split('T')[0],
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: events.isEmpty
-                    ? const Center(child: Text('予定はありません'))
-                    : ListView.builder(
-                        itemCount: events.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 12.0,
-                              vertical: 4.0,
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(),
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            child: ListTile(
-                              onTap: () => print('${events[index]}'),
-                              title: Text('${events[index]}'),
-                            ),
-                          );
-                        },
-                      ),
-              ),
-            ],
-          ),
+        return EventBottomSheet(
+          selectedDate: day,
+          events: events,
+          onEventTap: _handleEventTap,
+          onEventSave: _handleEventSave,
         );
       },
     );
@@ -181,10 +135,10 @@ class _SchedulePageState extends State<SchedulePage> {
                 final isSunday = day.weekday == DateTime.sunday;
                 final isSaturday = day.weekday == DateTime.saturday;
                 final color = isSunday
-                    ? Colors.red.withOpacity(0.5)
+                    ? Colors.red.withValues(alpha: 0.5)
                     : isSaturday
-                        ? Colors.blue.withOpacity(0.5)
-                        : Colors.grey.withOpacity(0.5);
+                        ? Colors.blue.withValues(alpha: 0.5)
+                        : Colors.grey.withValues(alpha: 0.5);
 
                 return Center(
                   child: Text(
@@ -203,7 +157,7 @@ class _SchedulePageState extends State<SchedulePage> {
                 return Container(
                   margin: const EdgeInsets.all(4.0),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor.withOpacity(0.3),
+                    color: Theme.of(context).primaryColor.withValues(alpha: 0.3),
                     shape: BoxShape.circle,
                   ),
                   child: Center(
