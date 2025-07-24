@@ -15,12 +15,12 @@ class HamburgerMenu extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
             alignment: Alignment.bottomLeft,
             decoration: BoxDecoration(
-              color: Colors.grey[850],
+              color: Theme.of(context).colorScheme.primary,
             ),
-            child: const Text(
+            child: Text(
               'Menu',
               style: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onPrimary,
                 fontSize: 24,
               ),
             ),
