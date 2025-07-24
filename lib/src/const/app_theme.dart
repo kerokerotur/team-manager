@@ -28,7 +28,7 @@ final ThemeData lightTheme = ThemeData(
   ),
 
   // Card
-  cardTheme: CardTheme(
+  cardTheme: CardThemeData(
     color: LightColorScheme.scheme.surface,
     shadowColor: AppColors.shadowLight,
     elevation: AppElevation.card,
@@ -136,7 +136,7 @@ final ThemeData darkTheme = ThemeData(
   ),
 
   // Card
-  cardTheme: CardTheme(
+  cardTheme: CardThemeData(
     color: DarkColorScheme.scheme.surface,
     shadowColor: AppColors.shadowDark,
     elevation: AppElevation.card,

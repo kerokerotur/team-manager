@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_template/main.dart';
+import 'package:flutter_template/src/page/add_event.dart';
 import 'package:flutter_template/src/page/events.dart';
 import 'package:flutter_template/src/page/schedule.dart';
 import 'package:flutter_template/src/page/settings.dart';
@@ -28,7 +29,7 @@ final GoRouter router = GoRouter(
       name: '/',
       pageBuilder: (context, state) => fadeTransitionPage(
         key: state.pageKey,
-        child: const MyHomePage(title: ''),
+        child: const MyHomePage(title: 'ホーム'),
       ),
     ),
     GoRoute(
@@ -54,6 +55,20 @@ final GoRouter router = GoRouter(
         key: state.pageKey,
         child: const SettingsPage(),
       ),
+    ),
+    GoRoute(
+      path: '/add-event',
+      name: '/add-event',
+      pageBuilder: (context, state) {
+        final selectedDateString = state.uri.queryParameters['date'];
+        final selectedDate = selectedDateString != null
+            ? DateTime.tryParse(selectedDateString) ?? DateTime.now()
+            : DateTime.now();
+        return fadeTransitionPage(
+          key: state.pageKey,
+          child: AddEventPage(selectedDate: selectedDate),
+        );
+      },
     ),
   ],
 );
