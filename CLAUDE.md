@@ -169,8 +169,15 @@ class MyDatabase extends _$MyDatabase {
 ```
 
 ## データベース設計（現在）
-- **todos**: id, title, content, category
-- **categories**: id, description
+- **users**: id, name, email
+- **workspaces**: id, name, created_user_id, created_datetime
+- **user_teams_related**: id, user_id, team_id, role, joined_datetime
+- **events**: id, title, detail, date, start_time, end_time, location_id, rsvp, remainder, team_id, created_user_id, created_datetime
+  - **rsvp**: is_required, deadline
+  - **reminder**: minutes_before, method
+- **categories**: id, title
+- **event_participants**: id, event_id, user_id, status, responded_datetime
+- **locations**: id, name, address, lat, lng
 
 ## 開発時の注意点
 
@@ -208,6 +215,7 @@ class MyDatabase extends _$MyDatabase {
 
 ## 今後の開発予定
 - ユーザー認証機能
+- ワークスペース作成・参加機能
 - イベント作成・編集機能
 - 出欠管理機能
 - グループ管理機能
