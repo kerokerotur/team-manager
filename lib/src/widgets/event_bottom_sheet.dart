@@ -7,7 +7,6 @@ import 'common/selection_list_tile.dart';
 import 'common/form_switch_tile.dart';
 import 'common/category_selector.dart';
 import 'common/category_management_dialog.dart';
-import 'common/date_picker_tile.dart';
 
 // イベントを表すシンプルなクラス（schedule.dartと共通利用）
 class Event {
@@ -44,6 +43,7 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _locationController = TextEditingController();
+  final _scrollController = ScrollController();
   TimeOfDay? _selectedTime;
   TimeOfDay? _selectedEndTime;
   bool _isRsvpRequired = false;
@@ -88,13 +88,63 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
     _titleController.dispose();
     _descriptionController.dispose();
     _locationController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
+  /// ダイアログ表示時のフォーカス・スクロール位置管理共通処理
+  Future<T?> _showDialogWithScrollPreservation<T>(
+    Future<T?> Function() dialogFunction,
+  ) async {
+    // ダイアログ表示前の準備
+    FocusScope.of(context).unfocus();
+    final currentScrollOffset = _scrollController.hasClients ? _scrollController.offset : 0.0;
+    
+    // ダイアログ表示
+    final result = await dialogFunction();
+    
+    // ダイアログ終了後の復元処理
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FocusScope.of(context).unfocus();
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          currentScrollOffset,
+          duration: const Duration(milliseconds: 100),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+    
+    return result;
+  }
+
+  /// 日付選択ダイアログ表示の共通処理
+  Future<void> _selectDate({
+    required DateTime? currentDate,
+    required String title,
+    DateTime? firstDate,
+    DateTime? lastDate,
+    required Function(DateTime?) onDateChanged,
+  }) async {
+    final DateTime? picked = await _showDialogWithScrollPreservation(() =>
+      showDatePicker(
+        context: context,
+        initialDate: currentDate ?? DateTime.now(),
+        firstDate: firstDate ?? DateTime(2000),
+        lastDate: lastDate ?? DateTime(2100),
+      ),
+    );
+    if (picked != null) {
+      onDateChanged(picked);
+    }
+  }
+
   Future<void> _selectTime() async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: _selectedTime ?? TimeOfDay.now(),
+    final TimeOfDay? picked = await _showDialogWithScrollPreservation(() => 
+      showTimePicker(
+        context: context,
+        initialTime: _selectedTime ?? TimeOfDay.now(),
+      ),
     );
     if (picked != null) {
       setState(() {
@@ -104,9 +154,11 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
   }
 
   Future<void> _selectEndTime() async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: _selectedEndTime ?? TimeOfDay.now(),
+    final TimeOfDay? picked = await _showDialogWithScrollPreservation(() => 
+      showTimePicker(
+        context: context,
+        initialTime: _selectedEndTime ?? TimeOfDay.now(),
+      ),
     );
     if (picked != null) {
       setState(() {
@@ -241,11 +293,14 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
         ),
         const Divider(),
         Expanded(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+          child: GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                 // 基本情報カード
                 FormCard(
                   title: '基本情報',
@@ -286,16 +341,22 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
                 FormCard(
                   title: '日時設定',
                   children: [
-                    DatePickerTile(
-                      selectedDate: _selectedEventDate,
-                      label: 'イベント日',
-                      onDateChanged: (date) {
-                        setState(() {
-                          _selectedEventDate = date;
-                        });
-                      },
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime.now().add(const Duration(days: 365)),
+                    SelectionListTile(
+                      leadingIcon: Icons.calendar_today,
+                      title: _selectedEventDate != null
+                          ? 'イベント日: ${DateFormat('yyyy年M月d日(E)', 'ja_JP').format(_selectedEventDate!)}'
+                          : 'イベント日を選択',
+                      onTap: () => _selectDate(
+                        currentDate: _selectedEventDate,
+                        title: 'イベント日',
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime.now().add(const Duration(days: 365)),
+                        onDateChanged: (date) {
+                          setState(() {
+                            _selectedEventDate = date;
+                          });
+                        },
+                      ),
                     ),
                     const Divider(),
                     SelectionListTile(
@@ -331,17 +392,22 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
                     ),
                     if (_isRsvpRequired) ...[
                       const Divider(),
-                      DatePickerTile(
-                        selectedDate: _rsvpDeadline,
-                        label: '回答期限',
-                        placeholder: '回答期限を選択',
-                        firstDate: DateTime.now(),
-                        lastDate: _selectedEventDate ?? DateTime.now().add(const Duration(days: 365)),
-                        onDateChanged: (date) {
-                          setState(() {
-                            _rsvpDeadline = date;
-                          });
-                        },
+                      SelectionListTile(
+                        leadingIcon: Icons.calendar_today,
+                        title: _rsvpDeadline != null
+                            ? '回答期限: ${DateFormat('yyyy年M月d日(E)', 'ja_JP').format(_rsvpDeadline!)}'
+                            : '回答期限を選択',
+                        onTap: () => _selectDate(
+                          currentDate: _rsvpDeadline,
+                          title: '回答期限',
+                          firstDate: DateTime.now(),
+                          lastDate: _selectedEventDate ?? DateTime.now().add(const Duration(days: 365)),
+                          onDateChanged: (date) {
+                            setState(() {
+                              _rsvpDeadline = date;
+                            });
+                          },
+                        ),
                       ),
                     ],
                   ],
@@ -388,7 +454,8 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
                   ],
                 ),
                 const SizedBox(height: 16), // 最下部にスペースを追加
-              ],
+                ],
+              ),
             ),
           ),
         ),
