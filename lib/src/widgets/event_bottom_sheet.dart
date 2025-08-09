@@ -7,6 +7,8 @@ import 'common/selection_list_tile.dart';
 import 'common/form_switch_tile.dart';
 import 'common/category_selector.dart';
 import 'common/category_management_dialog.dart';
+import 'common/date_picker_tile.dart';
+import 'event_form/reminder_card.dart';
 
 // イベントを表すシンプルなクラス（schedule.dartと共通利用）
 class Event {
@@ -53,30 +55,6 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
   EventCategory? _selectedCategory;
   DateTime? _selectedEventDate;
 
-  // 場所のサジェストリスト
-  final List<String> _locationSuggestions = [
-    '体育館',
-    'グラウンド',
-    '野球場',
-    'サッカー場',
-    'テニスコート',
-    'プール',
-    '会議室',
-    '教室',
-  ];
-
-  // デフォルトカテゴリリスト（8個）
-  List<EventCategory> _categories = [
-    const EventCategory(id: 1, title: '練習', color: Colors.blue),
-    const EventCategory(id: 2, title: '試合', color: Colors.red),
-    const EventCategory(id: 3, title: 'ミーティング', color: Colors.green),
-    const EventCategory(id: 4, title: '合宿', color: Colors.orange),
-    const EventCategory(id: 5, title: 'イベント', color: Colors.purple),
-    const EventCategory(id: 6, title: '懇親会', color: Colors.pink),
-    const EventCategory(id: 7, title: 'トレーニング', color: Colors.teal),
-    const EventCategory(id: 8, title: 'その他', color: Colors.grey),
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -116,27 +94,6 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
     });
     
     return result;
-  }
-
-  /// 日付選択ダイアログ表示の共通処理
-  Future<void> _selectDate({
-    required DateTime? currentDate,
-    required String title,
-    DateTime? firstDate,
-    DateTime? lastDate,
-    required Function(DateTime?) onDateChanged,
-  }) async {
-    final DateTime? picked = await _showDialogWithScrollPreservation(() =>
-      showDatePicker(
-        context: context,
-        initialDate: currentDate ?? DateTime.now(),
-        firstDate: firstDate ?? DateTime(2000),
-        lastDate: lastDate ?? DateTime(2100),
-      ),
-    );
-    if (picked != null) {
-      onDateChanged(picked);
-    }
   }
 
   Future<void> _selectTime() async {
@@ -321,12 +278,10 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
                     const SizedBox(height: 16),
                     LocationAutocompleteField(
                       controller: _locationController,
-                      suggestions: _locationSuggestions,
                     ),
                     const SizedBox(height: 16),
                     CategorySelector(
                       selectedCategory: _selectedCategory,
-                      categories: _categories,
                       onCategoryChanged: (category) {
                         setState(() {
                           _selectedCategory = category;
@@ -341,22 +296,17 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
                 FormCard(
                   title: '日時設定',
                   children: [
-                    SelectionListTile(
-                      leadingIcon: Icons.calendar_today,
-                      title: _selectedEventDate != null
-                          ? 'イベント日: ${DateFormat('yyyy年M月d日(E)', 'ja_JP').format(_selectedEventDate!)}'
-                          : 'イベント日を選択',
-                      onTap: () => _selectDate(
-                        currentDate: _selectedEventDate,
-                        title: 'イベント日',
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime.now().add(const Duration(days: 365)),
-                        onDateChanged: (date) {
-                          setState(() {
-                            _selectedEventDate = date;
-                          });
-                        },
-                      ),
+                    DatePickerTile(
+                      selectedDate: _selectedEventDate,
+                      label: 'イベント日',
+                      onDateChanged: (date) {
+                        setState(() {
+                          _selectedEventDate = date;
+                        });
+                      },
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime.now().add(const Duration(days: 365)),
+                      scrollController: _scrollController,
                     ),
                     const Divider(),
                     SelectionListTile(
@@ -392,66 +342,37 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
                     ),
                     if (_isRsvpRequired) ...[
                       const Divider(),
-                      SelectionListTile(
-                        leadingIcon: Icons.calendar_today,
-                        title: _rsvpDeadline != null
-                            ? '回答期限: ${DateFormat('yyyy年M月d日(E)', 'ja_JP').format(_rsvpDeadline!)}'
-                            : '回答期限を選択',
-                        onTap: () => _selectDate(
-                          currentDate: _rsvpDeadline,
-                          title: '回答期限',
-                          firstDate: DateTime.now(),
-                          lastDate: _selectedEventDate ?? DateTime.now().add(const Duration(days: 365)),
-                          onDateChanged: (date) {
-                            setState(() {
-                              _rsvpDeadline = date;
-                            });
-                          },
-                        ),
+                      DatePickerTile(
+                        selectedDate: _rsvpDeadline,
+                        label: '回答期限',
+                        placeholder: '回答期限を選択',
+                        firstDate: DateTime.now(),
+                        lastDate: _selectedEventDate ?? DateTime.now().add(const Duration(days: 365)),
+                        onDateChanged: (date) {
+                          setState(() {
+                            _rsvpDeadline = date;
+                          });
+                        },
+                        scrollController: _scrollController,
                       ),
                     ],
                   ],
                 ),
                 const SizedBox(height: 16),
                 // リマインダー設定カード
-                FormCard(
-                  title: 'リマインダー設定',
-                  children: [
-                    FormSwitchTile(
-                      title: 'リマインダーを設定',
-                      value: _hasReminder,
-                      onChanged: (value) {
-                        setState(() {
-                          _hasReminder = value;
-                        });
-                      },
-                    ),
-                    if (_hasReminder) ...[
-                      const Divider(),
-                      ListTile(
-                        leading: const Icon(Icons.schedule),
-                        title: const Text('通知タイミング'),
-                        subtitle: Text(_getReminderText(_reminderMinutes)),
-                        trailing: DropdownButton<int>(
-                          value: _reminderMinutes,
-                          items: const [
-                            DropdownMenuItem(value: 15, child: Text('15分前')),
-                            DropdownMenuItem(value: 30, child: Text('30分前')),
-                            DropdownMenuItem(value: 60, child: Text('1時間前')),
-                            DropdownMenuItem(value: 360, child: Text('6時間前')),
-                            DropdownMenuItem(value: 720, child: Text('12時間前')),
-                            DropdownMenuItem(value: 1440, child: Text('1日前')),
-                          ],
-                          onChanged: (value) {
-                            setState(() {
-                              _reminderMinutes = value!;
-                            });
-                          },
-                        ),
-                        contentPadding: EdgeInsets.zero,
-                      ),
-                    ],
-                  ],
+                ReminderCard(
+                  hasReminder: _hasReminder,
+                  reminderMinutes: _reminderMinutes,
+                  onReminderToggle: (value) {
+                    setState(() {
+                      _hasReminder = value;
+                    });
+                  },
+                  onReminderMinutesChanged: (minutes) {
+                    setState(() {
+                      _reminderMinutes = minutes;
+                    });
+                  },
                 ),
                 const SizedBox(height: 16), // 最下部にスペースを追加
                 ],
@@ -467,33 +388,14 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
     showDialog(
       context: context,
       builder: (context) => CategoryManagementDialog(
-        categories: _categories,
+        categories: CategorySelector.defaultCategories,
         onCategoriesChanged: (updatedCategories) {
-          setState(() {
-            _categories = updatedCategories;
-          });
+          // カテゴリ更新時の処理
+          // 現在はデフォルトカテゴリを使用しているため、
+          // 将来的にカスタムカテゴリ対応時に実装
         },
       ),
     );
-  }
-
-  String _getReminderText(int minutes) {
-    switch (minutes) {
-      case 15:
-        return '15分前';
-      case 30:
-        return '30分前';
-      case 60:
-        return '1時間前';
-      case 360:
-        return '6時間前';
-      case 720:
-        return '12時間前';
-      case 1440:
-        return '1日前';
-      default:
-        return '$minutes分前';
-    }
   }
 
   @override

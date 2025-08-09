@@ -65,13 +65,13 @@ class AppColors {
 
   // 透明度付きカラー
   static Color withOpacity(Color color, double opacity) {
-    return color.withOpacity(opacity);
+    return color.withValues(alpha: opacity);
   }
 
   // シャドウカラー
-  static final Color shadowLight = black.withOpacity(0.1);
-  static final Color shadowMedium = black.withOpacity(0.2);
-  static final Color shadowDark = black.withOpacity(0.3);
+  static final Color shadowLight = black.withValues(alpha: 0.1);
+  static final Color shadowMedium = black.withValues(alpha: 0.2);
+  static final Color shadowDark = black.withValues(alpha: 0.3);
 }
 
 /// ライトテーマ用のカラースキーム

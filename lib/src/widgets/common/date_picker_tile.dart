@@ -10,6 +10,7 @@ class DatePickerTile extends StatelessWidget {
   final DateTime? lastDate;
   final ValueChanged<DateTime?> onDateChanged;
   final bool enabled;
+  final ScrollController? scrollController;
 
   const DatePickerTile({
     super.key,
@@ -20,10 +21,15 @@ class DatePickerTile extends StatelessWidget {
     this.lastDate,
     required this.onDateChanged,
     this.enabled = true,
+    this.scrollController,
   });
 
   Future<void> _selectDate(BuildContext context) async {
     if (!enabled) return;
+
+    // ダイアログ表示前の準備（フォーカス・スクロール位置保持）
+    FocusScope.of(context).unfocus();
+    final currentScrollOffset = scrollController?.hasClients == true ? scrollController!.offset : 0.0;
 
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -35,6 +41,18 @@ class DatePickerTile extends StatelessWidget {
     if (picked != null) {
       onDateChanged(picked);
     }
+
+    // ダイアログ終了後の復元処理
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FocusScope.of(context).unfocus();
+      if (scrollController?.hasClients == true) {
+        scrollController!.animateTo(
+          currentScrollOffset,
+          duration: const Duration(milliseconds: 100),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
   }
 
   String get _displayText {

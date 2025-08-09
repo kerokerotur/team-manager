@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/src/router.dart';
+import 'package:go_router/go_router.dart';
 
 class AppFooter extends StatelessWidget {
   const AppFooter({Key? key}) : super(key: key);
@@ -50,7 +50,7 @@ class _FooterNavItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        router.pushNamed(routeName);
+        context.pushNamed(routeName);
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,

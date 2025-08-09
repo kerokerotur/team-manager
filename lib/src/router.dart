@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_template/main.dart';
 import 'package:flutter_template/src/page/events.dart';
 import 'package:flutter_template/src/page/schedule.dart';
 import 'package:flutter_template/src/page/settings.dart';
+import 'package:flutter_template/src/page/login.dart';
+import 'package:flutter_template/src/providers/auth_provider.dart';
 import 'package:go_router/go_router.dart';
 
 // フェードアニメーション付きページ生成の共通関数
@@ -20,6 +23,74 @@ CustomTransitionPage<T> fadeTransitionPage<T>(
   );
 }
 
+/// 認証対応ルータープロバイダー
+final routerProvider = Provider<GoRouter>((ref) {
+  final isLoggedIn = ref.watch(isLoggedInProvider);
+  
+  return GoRouter(
+    initialLocation: '/',
+    redirect: (context, state) {
+      final path = state.uri.path;
+      
+      // ログインページの場合は認証チェックしない
+      if (path == '/login') {
+        return isLoggedIn ? '/' : null;
+      }
+      
+      // 未認証の場合はログインページにリダイレクト
+      if (!isLoggedIn) {
+        return '/login';
+      }
+      
+      return null;
+    },
+    routes: [
+      GoRoute(
+        path: '/login',
+        name: '/login',
+        pageBuilder: (context, state) => fadeTransitionPage(
+          key: state.pageKey,
+          child: const LoginPage(),
+        ),
+      ),
+      GoRoute(
+        path: '/',
+        name: '/',
+        pageBuilder: (context, state) => fadeTransitionPage(
+          key: state.pageKey,
+          child: const MyHomePage(title: 'ホーム'),
+        ),
+      ),
+      GoRoute(
+        path: '/events',
+        name: '/events',
+        pageBuilder: (context, state) => fadeTransitionPage(
+          key: state.pageKey,
+          child: const EventsPage(),
+        ),
+      ),
+      GoRoute(
+        path: '/schedule',
+        name: '/schedule',
+        pageBuilder: (context, state) => fadeTransitionPage(
+          key: state.pageKey,
+          child: const SchedulePage(),
+        ),
+      ),
+      GoRoute(
+        path: '/settings',
+        name: '/settings',
+        pageBuilder: (context, state) => fadeTransitionPage(
+          key: state.pageKey,
+          child: const SettingsPage(),
+        ),
+      ),
+    ],
+  );
+});
+
+/// 後方互換性のためのルーター（非推奨）
+@Deprecated('routerProviderを使用してください')
 final GoRouter router = GoRouter(
   initialLocation: '/',
   routes: [
@@ -29,30 +100,6 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => fadeTransitionPage(
         key: state.pageKey,
         child: const MyHomePage(title: 'ホーム'),
-      ),
-    ),
-    GoRoute(
-      path: '/events',
-      name: '/events',
-      pageBuilder: (context, state) => fadeTransitionPage(
-        key: state.pageKey,
-        child: const EventsPage(),
-      ),
-    ),
-    GoRoute(
-      path: '/schedule',
-      name: '/schedule',
-      pageBuilder: (context, state) => fadeTransitionPage(
-        key: state.pageKey,
-        child: const SchedulePage(),
-      ),
-    ),
-    GoRoute(
-      path: '/settings',
-      name: '/settings',
-      pageBuilder: (context, state) => fadeTransitionPage(
-        key: state.pageKey,
-        child: const SettingsPage(),
       ),
     ),
   ],

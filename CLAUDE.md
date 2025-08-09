@@ -172,7 +172,7 @@ class MyDatabase extends _$MyDatabase {
 - **users**: id, name, email
 - **workspaces**: id, name, created_user_id, created_datetime
 - **user_teams_related**: id, user_id, team_id, role, joined_datetime
-- **events**: id, title, detail, date, start_time, end_time, location_id, rsvp, remainder, team_id, created_user_id, created_datetime
+- **events**: id, title, detail, date, start_time, end_time, location_id, rsvp, remainder, team_id, created_user_id, created_datetime, updated_user_id, updated_datetime
   - **rsvp**: is_required, deadline
   - **reminder**: minutes_before, method
 - **categories**: id, title

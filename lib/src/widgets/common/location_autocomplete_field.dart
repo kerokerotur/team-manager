@@ -2,17 +2,31 @@ import 'package:flutter/material.dart';
 
 class LocationAutocompleteField extends StatelessWidget {
   final TextEditingController controller;
-  final List<String> suggestions;
+  final List<String>? suggestions;
   final String labelText;
   final int? maxLength;
 
   const LocationAutocompleteField({
     super.key,
     required this.controller,
-    required this.suggestions,
+    this.suggestions,
     this.labelText = '場所',
     this.maxLength = 100,
   });
+
+  /// デフォルト場所サジェストリスト - ウィジェット側で管理
+  static const List<String> defaultSuggestions = [
+    '体育館',
+    'グラウンド',
+    '野球場',
+    'サッカー場',
+    'テニスコート',
+    'プール',
+    '会議室',
+    '教室',
+  ];
+
+  List<String> get _effectiveSuggestions => suggestions ?? defaultSuggestions;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +35,7 @@ class LocationAutocompleteField extends StatelessWidget {
         if (textEditingValue.text == '') {
           return const Iterable<String>.empty();
         }
-        return suggestions.where((String option) {
+        return _effectiveSuggestions.where((String option) {
           return option.contains(textEditingValue.text);
         });
       },

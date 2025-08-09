@@ -26,17 +26,31 @@ class EventCategory {
 
 class CategorySelector extends StatelessWidget {
   final EventCategory? selectedCategory;
-  final List<EventCategory> categories;
+  final List<EventCategory>? categories;
   final ValueChanged<EventCategory?> onCategoryChanged;
   final VoidCallback? onManageCategories;
 
   const CategorySelector({
     super.key,
     required this.selectedCategory,
-    required this.categories,
+    this.categories,
     required this.onCategoryChanged,
     this.onManageCategories,
   });
+
+  /// デフォルトカテゴリリスト - ウィジェット側で管理
+  static const List<EventCategory> defaultCategories = [
+    EventCategory(id: 1, title: '練習', color: Colors.blue),
+    EventCategory(id: 2, title: '試合', color: Colors.red),
+    EventCategory(id: 3, title: 'ミーティング', color: Colors.green),
+    EventCategory(id: 4, title: '合宿', color: Colors.orange),
+    EventCategory(id: 5, title: 'イベント', color: Colors.purple),
+    EventCategory(id: 6, title: '懇親会', color: Colors.pink),
+    EventCategory(id: 7, title: 'トレーニング', color: Colors.teal),
+    EventCategory(id: 8, title: 'その他', color: Colors.grey),
+  ];
+
+  List<EventCategory> get _effectiveCategories => categories ?? defaultCategories;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +70,7 @@ class CategorySelector extends StatelessWidget {
               value: null,
               child: Text('カテゴリを選択'),
             ),
-            ...categories.map((category) {
+            ..._effectiveCategories.map((category) {
               return DropdownMenuItem<EventCategory?>(
                 value: category,
                 child: Row(

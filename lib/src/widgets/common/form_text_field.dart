@@ -7,6 +7,9 @@ class FormTextField extends StatelessWidget {
   final int? maxLines;
   final int? maxLength;
   final Widget? suffixIcon;
+  final TextInputType? keyboardType;
+  final String? Function(String?)? validator;
+  final bool obscureText;
 
   const FormTextField({
     super.key,
@@ -16,11 +19,14 @@ class FormTextField extends StatelessWidget {
     this.maxLines = 1,
     this.maxLength,
     this.suffixIcon,
+    this.keyboardType,
+    this.validator,
+    this.obscureText = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: controller,
       decoration: InputDecoration(
         labelText: isRequired ? '$labelText *' : labelText,
@@ -29,6 +35,9 @@ class FormTextField extends StatelessWidget {
       ),
       maxLines: maxLines,
       maxLength: maxLength,
+      keyboardType: keyboardType,
+      validator: validator,
+      obscureText: obscureText,
     );
   }
 }

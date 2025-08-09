@@ -34,6 +34,7 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final locales = ref.watch(localesProvider);
     final themeMode = ref.watch(flutterThemeModeProvider);
+    final router = ref.watch(routerProvider);
 
     ref.read(localesProvider.notifier).setup();
 
@@ -74,7 +75,11 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   void _incrementCounter() {
-    router.pushNamed('/sample');
+    // GoRouter のコンテキスト経由で遷移
+    // context.pushNamed('/sample'); // サンプルページがないため無効化
+    setState(() {
+      _counter++;
+    });
   }
 
   @override
