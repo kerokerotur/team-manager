@@ -18,7 +18,7 @@ class HamburgerMenu extends ConsumerWidget {
             height: kToolbarHeight + MediaQuery.of(context).padding.top + 40,
             padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary,
+              color: Theme.of(context).appBarTheme.backgroundColor,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,7 +27,7 @@ class HamburgerMenu extends ConsumerWidget {
                 Text(
                   'Team Manager',
                   style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary,
+                    color: Theme.of(context).appBarTheme.foregroundColor,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
@@ -37,14 +37,14 @@ class HamburgerMenu extends ConsumerWidget {
                   Text(
                     currentUser.name,
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.8),
+                      color: Theme.of(context).appBarTheme.foregroundColor?.withValues(alpha: 0.8),
                       fontSize: 14,
                     ),
                   ),
                   Text(
                     currentUser.email,
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.7),
+                      color: Theme.of(context).appBarTheme.foregroundColor?.withValues(alpha: 0.7),
                       fontSize: 12,
                     ),
                   ),
