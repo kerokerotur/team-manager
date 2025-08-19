@@ -32,6 +32,17 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+*.g.dart
+*.freezed.dart
+lib/**/*.g.dart
+lib/**/*.freezed.dart
+*.config.dart
+
+# Drift（SQLite）関連
+*.drift.dart
+
+# l10n（多言語対応）自動生成ファイル
+lib/l10n/
 
 # Symbolication related
 app.*.symbols
@@ -50,5 +61,11 @@ app.*.map.json
 # extract_dart_defines.shで実装している
 **/ios/Flutter/Dart-Defines.xcconfig
 
+# Gen AI Prompt
+.prompt/
+
 # FVM Version Cache
 .fvm/
+
+# KIRO
+.kiro/
